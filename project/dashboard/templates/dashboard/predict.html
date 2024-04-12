@@ -1,0 +1,154 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Predict</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #23284e; /* Light Purple Background */
+      color: #423f5f; /* Dark Purple Font Color */
+    }
+
+    .horizontal-card {
+      display: flex;
+    }
+
+    .column-card {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .navbar {
+      background-color: #23284e; /* Dark Purple Navbar */
+      overflow: hidden;
+      color: white;
+      width: 180px;
+      height: 80%; /* Adjusted height */
+      padding: 0; /* Remove padding */
+      margin: 0; /* Remove margin */
+      display: flex;
+      flex-direction: column;
+    }
+
+    .t-head {
+        color: black;
+    }
+    
+    .navbar ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: left; /* Align items vertically in the center */
+      padding: 0 10px;
+    }
+
+    .navbar ul li a {
+      display: block;
+      color: white;
+      text-decoration: none;
+      line-height: 50px; /* Match line height with navbar height */
+    }
+
+    .navbar ul li a:hover {
+      background-color: #554e6f; /* Darker Hover Color */
+    }
+
+    #main-card {
+      margin-top: 10px;
+      padding: 10px;
+    }
+
+    .card {
+      color: #fff;
+      background-color: #4e506f;
+      box-shadow: 0 4px 8px rgba(4, 2, 56, 0.1);
+      border-radius: 15px;
+      margin: 10px;
+      padding: 10px;
+      width: 1200px; 
+      
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    tr:hover {
+      background-color: #d7d2e4;
+    }
+
+    h1 {
+      color: white;
+    }
+
+  </style>
+</head>
+<body>
+<div class="horizontal-card">
+    <div class="column-card">
+        <div class="navbar">
+            <ul>
+                <li><a href="http://127.0.0.1:8000/index/"><h2>PollCast </h2></a></li>
+                <li><a href="http://127.0.0.1:8000/index/"><i class="fas fa-chart-bar"></i> Dashboard</a></li>
+                <li><a href="http://127.0.0.1:8000/predict/"><i class="fa fa-line-chart" aria-hidden="true"></i> Prediction</a></li>
+                <li><a href="http://127.0.0.1:8000/exitpoll/"><i class="fa-solid fa-check-to-slot"></i> Exit Polls</a></li>
+                <li><a href="http://127.0.0.1:8000/history/"><i class="fas fa-history"></i> Historical Data</a></li>
+                <li><a href="http://127.0.0.1:8000/state/"><i class="fa fa-sort-amount-asc" aria-hidden="true"></i> Historical Predict</a></li>
+                <li><a href="http://127.0.0.1:8000/social/"><i class="fa-solid fa-photo-film"></i> Social Media</a></li>
+                <li><a href="http://127.0.0.1:8000/tweets/"><i class="fa-solid fa-hashtag"></i> Party Tweets</a></li>
+                <li><a href="http://127.0.0.1:8000/news/"><i class="fas fa-newspaper"></i> News Site</a></li>
+                <li><a href="http://127.0.0.1:8000/feedback/"><i class="fas fa-comment"></i> Feedback</a></li>
+                <li><a href="http://127.0.0.1:8000/aboutus/"><i class="fas fa-info-circle"></i> About Us</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="column-card" id="main-card">
+        <div class="column-card">
+            <div>
+                <h1>Final Predictions</h1>
+            </div>
+            <div class="card">
+                <table>
+                    <thead style="color:black;">
+                        <tr>
+                            <th>State</th>
+                            <th>Winner</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in table_data %}
+                        <tr>
+                            <td>{{ row.State }}</td>
+                            <td>{{ row.Winner }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #23284e; 
+      color: #423f5f;
+    }
+
+    .horizontal-card {
+      display: flex;
+    }
+
+    .column-card {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .navbar {
+      background-color: #23284e; /* Dark Purple Navbar */
+      overflow: hidden;
+      color: white;
+      width: 180px;
+      height: 80%; 
+      padding: 0; 
+      margin: 0; 
+      display: flex;
+      flex-direction: column;
+    }
+
+    
+    .navbar ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: left; /* Align items vertically in the center */
+      padding: 0 10px;
+    }
+
+    .navbar ul li a {
+      display: block;
+      color: white;
+      text-decoration: none;
+      line-height: 50px; /* Match line height with navbar height */
+    }
+
+    .navbar ul li a:hover {
+      background-color: #554e6f; /* Darker Hover Color */
+    }
+
+    #main-card {
+      margin-top: 10px;
+      padding: 10px;
+    }
+
+    .card {
+      color: #fff;
+      background-color: #4e506f;
+      box-shadow: 0 4px 8px rgba(4, 2, 56, 0.1);
+      display:flex;
+      flex-direction:column;
+      border-radius: 15px;
+      margin: 10px;
+      padding: 30px;
+      height: 250px
+    }
+
+    .b-card {
+      color: #fff;
+      background-color: #4e506f;
+      box-shadow: 0 4px 8px rgba(4, 2, 56, 0.1);
+      border-radius: 15px;
+      margin: 10px;
+      padding: 10px;
+      width: 1120px; 
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    tr:hover {
+      background-color: #d7d2e4;
+    }
+
+    h1 {
+      color: white;
+    }
+
+    p {
+      color: #7e779b;
+    }
+
+    .feedback-options {
+        display: flex;
+        flex-direction: column;
+      }
+      
+      .feedback-option {
+        background-color: #6c70a8;
+        color: white;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+      
+      .feedback-option:hover {
+        background-color: #554e6f; /* Darker Hover Color */
+      }
+      
+      .feedback-form {
+        margin-top: 20px;
+      }
+      
+      .feedback-form label {
+        color: white;
+      }
+      
+      .feedback-form textarea {
+        width: 90%;
+        height: 100px;
+        padding: 10px;
+        margin: 10px 0;
+        border: none;
+        border-radius: 8px;
+        background-color: #6c70a8;
+        color: white;
+      }
+      
+      .feedback-form button {
+        width: 40%;
+        padding: 10px 20px;
+        background-color: #6c70a8;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+      
+      .feedback-form button:hover {
+        background-color: #423f5f; /* Darker Hover Color */
+      }
+      
+  </style>
+</head>
+<body>
+<div class="horizontal-card">
+  <div class="column-card">
+    <div class="navbar">
+      <ul>
+        <li><a href="http://127.0.0.1:8000/index/"><h2>PollCast </h2></a></li>
+        <li><a href="http://127.0.0.1:8000/index/"><i class="fas fa-chart-bar"></i> Dashboard</a></li>
+        <li><a href="http://127.0.0.1:8000/predict/"><i class="fa fa-line-chart" aria-hidden="true"></i> Prediction</a></li>
+        <li><a href="http://127.0.0.1:8000/exitpoll/"><i class="fa-solid fa-check-to-slot"></i> Exit Polls</a></li>
+        <li><a href="http://127.0.0.1:8000/history/"><i class="fas fa-history"></i> Historical Data</a></li>
+        <li><a href="http://127.0.0.1:8000/state/"><i class="fa fa-sort-amount-asc" aria-hidden="true"></i> Historical Predict</a></li>
+        <li><a href="http://127.0.0.1:8000/social/"><i class="fa-solid fa-photo-film"></i> Social Media</a></li>
+        <li><a href="http://127.0.0.1:8000/tweets/"><i class="fa-solid fa-hashtag"></i> Party Tweets</a></li>
+        <li><a href="http://127.0.0.1:8000/news/"><i class="fas fa-newspaper"></i> News Site</a></li>
+        <li><a href="http://127.0.0.1:8000/feedback/"><i class="fas fa-comment"></i> Feedback</a></li>
+        <li><a href="http://127.0.0.1:8000/aboutus/"><i class="fas fa-info-circle"></i> About Us</a></li>
+      </ul>
+    </div>
+  </div>
+    <div class="column-card" id="main-card">
+            <div class="column-card">
+                <div>
+                    <header>
+                        <h1>Feedback Page</h1>
+                    </header>
+                </div>
+
+                <div class="horizontal-card">
+                    <div class="card" style="width: 300px;">
+                        <h4>Select an option below to vote</h4>
+                        <div class="feedback-options" id="feedbackOptions">
+                            <div class="feedback-option" onclick="castVote('BJP')" style="padding: 10px;">BJP</div>
+                            <div class="feedback-option" onclick="castVote('BSP')" style="padding: 10px;">BSP</div>
+                            <div class="feedback-option" onclick="castVote('Congress')" style="padding: 10px;">Congress</div>
+                            <div class="feedback-option" onclick="castVote('AAP')" style="padding: 10px;">AAP</div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="horizontal-card" style="width: 700px;">
+                            <div id="feedbackCounters" class="feedback-counter" style="padding: 20px;">
+                            </div>
+                            <div>
+                            <canvas id="feedbackChart" style="padding: 20px; width: 500px;"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="b-card" style="height: 250px;">
+                    <form class="feedback-form">
+                        <div class="column-card">
+                        <label for="feedback">How do you like the website?</label>
+                        <textarea id="feedback" name="feedback"></textarea>
+                        <button type="submit">Submit Feedback</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+    </div>
+</div>
+<script>
+    let counters = JSON.parse(localStorage.getItem('feedbackCounters')) || {
+        BJP: 0,
+        BSP: 0,
+        Congress: 0,
+        AAP: 0
+      };
+  
+      function castVote(option) {
+        counters[option]++;
+        updateUI();
+      }
+  
+      function updateUI() {
+        const feedbackCounters = document.getElementById('feedbackCounters');
+        feedbackCounters.innerHTML = '';
+        Object.keys(counters).forEach(option => {
+          const counter = document.createElement('p');
+          counter.textContent = `${option}: ${counters[option]}`;
+          feedbackCounters.appendChild(counter);
+        });
+  
+        updateChart();
+        localStorage.setItem('feedbackCounters', JSON.stringify(counters));
+      }
+  
+      function updateChart() {
+        const ctx = document.getElementById('feedbackChart').getContext('2d');
+        const labels = Object.keys(counters);
+        const data = Object.values(counters);
+  
+        if (window.chart) {
+          window.chart.destroy();
+        }
+  
+        window.chart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: 'Votes',
+              data: data,
+              backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+              ],
+              borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+              ],
+              borderWidth: 1
+            }]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+      }
+  
+      updateUI();
+  
+      document.querySelector('.feedback-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const feedback = document.getElementById('feedback').value.trim();
+        if (feedback !== '') {
+          alert('Feedback submitted successfully!');
+          document.getElementById('feedback').value = '';
+        } else {
+          alert('Please provide your feedback before submitting.');
+        }
+      });
+</script>
+</body>
+</html>

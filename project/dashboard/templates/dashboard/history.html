@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>History</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #23284e; 
+      color: #423f5f;
+    }
+
+    .horizontal-card {
+      display: flex;
+    }
+
+    .column-card {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .navbar {
+      background-color: #23284e; /* Dark Purple Navbar */
+      overflow: hidden;
+      color: white;
+      width: 180px;
+      height: 80%; 
+      padding: 0; 
+      margin: 0; 
+      display: flex;
+      flex-direction: column;
+    }
+
+    
+    .navbar ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: left; /* Align items vertically in the center */
+      padding: 0 10px;
+    }
+
+    .navbar ul li a {
+      display: block;
+      color: white;
+      text-decoration: none;
+      line-height: 50px; /* Match line height with navbar height */
+    }
+
+    .navbar ul li a:hover {
+      background-color: #554e6f; /* Darker Hover Color */
+    }
+
+    #main-card {
+      margin-top: 10px;
+      padding: 10px;
+    }
+
+    .card {
+      color: #fff;
+      background-color: #4e506f;
+      box-shadow: 0 4px 8px rgba(4, 2, 56, 0.1);
+      border-radius: 15px;
+      margin: 10px;
+      padding: 5px;
+    }
+
+    .b-card {
+      color: #fff;
+      background-color: #4e506f;
+      box-shadow: 0 4px 8px rgba(4, 2, 56, 0.1);
+      border-radius: 15px;
+      margin: 5px;
+      padding: 5px;
+      width: 1200px; 
+    }
+
+    .bb-card {
+        color: #fff;
+        background-color: #4e506f;
+        box-shadow: 0 4px 8px rgba(4, 2, 56, 0.1);
+        border-radius: 15px;
+        margin: 10px;
+        padding: 10px;
+        width: 570px; 
+        height: 370px; /* Adjusted height */
+      }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    tr:hover {
+      background-color: #d7d2e4;
+    }
+
+    h1 {
+      color: white;
+    }
+
+    p {
+      color: #7e779b;
+    }
+
+  </style>
+</head>
+<body>
+<div class="horizontal-card">
+  <div class="column-card">
+    <div class="navbar">
+        <ul>
+            <li><a href="http://127.0.0.1:8000/index/"><h2>PollCast </h2></a></li>
+            <li><a href="http://127.0.0.1:8000/index/"><i class="fas fa-chart-bar"></i> Dashboard</a></li>
+            <li><a href="http://127.0.0.1:8000/predict/"><i class="fa fa-line-chart" aria-hidden="true"></i> Prediction</a></li>
+            <li><a href="http://127.0.0.1:8000/exitpoll/"><i class="fa-solid fa-check-to-slot"></i> Exit Polls</a></li>
+            <li><a href="http://127.0.0.1:8000/history/"><i class="fas fa-history"></i> Historical Data</a></li>
+            <li><a href="http://127.0.0.1:8000/state/"><i class="fa fa-sort-amount-asc" aria-hidden="true"></i> Historical Predict</a></li>
+            <li><a href="http://127.0.0.1:8000/social/"><i class="fa-solid fa-photo-film"></i> Social Media</a></li>
+            <li><a href="http://127.0.0.1:8000/tweets/"><i class="fa-solid fa-hashtag"></i> Party Tweets</a></li>
+            <li><a href="http://127.0.0.1:8000/news/"><i class="fas fa-newspaper"></i> News Site</a></li>
+            <li><a href="http://127.0.0.1:8000/feedback/"><i class="fas fa-comment"></i> Feedback</a></li>
+            <li><a href="http://127.0.0.1:8000/aboutus/"><i class="fas fa-info-circle"></i> About Us</a></li>
+        </ul>
+    </div>
+  </div>
+    <div class="column-card" id="main-card">
+            <div class="column-card">
+                <div class="b-card" style="height: 140px;">
+                    <div class="horizontal-card">
+                        <div>
+                            <h1>History Search</h1>
+                            <form method="GET" action="{% url 'search_history' %}">
+                                <label for="state">Select a State:</label>
+                                <select name="state" id="state">
+                                    <option value="">Select</option>
+                                    {% for state in states %}
+                                        <option value="{{ state }}">{{ state }}</option>
+                                    {% endfor %}
+                                </select>
+                        </div>
+                        <div style="margin:80px 250px;">
+                                <label for="year">Select a Year:</label>
+                                <select name="year" id="year">
+                                    <option value="">Select</option>
+                                    {% for year in years %}
+                                        <option value="{{ year }}">{{ year }}</option>
+                                    {% endfor %}
+                                </select>
+                            
+                        </div>
+                        <div style="margin:80px;">
+                            <button type="submit" class="button">Search</button>
+                        </div>
+                            
+                    </form>
+                    </div>
+                </div>
+                <div class="horizontal-card">
+                    <div class="column-card">
+                        <div id="leftBox" class="card" style="width: 250px; height: 300px;">
+                            <h2 style="margin:10px;">Election Statistics</h2>
+                            <ul id="electionStats">
+                                <li style="padding:5px; margin:3px;">Electors: {{ electors_total }}</li>
+                                <li style="padding:5px; margin:3px;">Votes Polled: {{ votes_polled_total }}</li>
+                                <li style="padding:5px; margin:3px;">Turnout: {{ turnout_average }}%</li>
+                                <li style="padding:5px; margin:3px;">Parliamentary Constituencies: {{ num_pc }}</li>
+                                <li style="padding:5px; margin:3px;">GENERAL: {{ num_general }}</li>
+                                <li style="padding:5px; margin:3px;">SC: {{ num_sc }}</li>
+                                <li style="padding:5px; margin:3px;">Bye Election Results: {{ num_bye_election }}</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="column-card">
+                        <div class="card" style="width: 450px; height: 300px;">
+                            <h2>Alliance Statistics</h2>
+                            <table border="1">
+                            <tr style="color:black;">
+                                <th>Alliance</th>
+                                <th>Seats</th>
+                                <th>Votes %</th>
+                                <th>Contested Voteshare</th>
+                            </tr>
+                            <tr>
+                                <td>UPA</td>
+                                <td>{{ upa_seats }}</td>
+                                <td>{{ upa_votes_percent }}</td>
+                                <td>{{ upa_contested_voteshare }}</td>
+                            </tr>
+                            <tr>
+                                <td>NDA</td>
+                                <td>{{ nda_seats }}</td>
+                                <td>{{ nda_votes_percent }}</td>
+                                <td>{{ nda_contested_voteshare }}</td>
+                            </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="column-card">
+                        <div class="card" style="width: 430px; height: 300px;">
+                            {% if party_stats %}
+                                <h2>Party Statistics</h2>
+                                <table>
+                                    <thead style="color:black;">
+                                        <tr>
+                                            <th>Party</th>
+                                            <th>Seats</th>
+                                            <th>Votes %</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for party, stats in party_stats.items %}
+                                            {% if forloop.counter0 < 4 %}
+                                                <tr>
+                                                    <td>{{ party }}</td>
+                                                    <td>{{ stats.seats }}</td>
+                                                    <td>{{ stats.votes_percent|floatformat:"1" }}</td>
+                                                </tr>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="horizontal-card">
+                    <div class="bb-card" id="age-analysis-container"> <h2>Party PieChart</h2>
+                        <canvas id="partyPieChart" style="width: 400px; max-height: 350px; margin:5px 60px"></canvas>
+                    </div>
+                    <div class="bb-card" id="gender-analysis-container"> <h2>Party Bar Chart</h2>
+                        <canvas id="partyBarChart" style="width: 400px; max-height: 400px;"></canvas>
+                    </div>
+                </div>
+                <div class="b-card" style="height: 500px; overflow: auto; padding: 5px;">
+                    <h1>Election Data for {{ selected_state }}</h1>
+                    <table border="1">
+                        <thead style="color:black;">
+                            <tr>
+                                <th>Sr. no.</th>
+                                <th>PC Name</th>
+                                <th>No</th>
+                                <th>Type</th>
+                                <th>State</th>
+                                <th>Winning Candidate</th>
+                                <th>Party</th>
+                                <th>Electors</th>
+                                <th>Votes</th>
+                                <th>Turnout</th>
+                                <th>Margin</th>
+                                <th>Margin %</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for entry in election_data %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ entry.pc_name }}</td>
+                                <td>{{ entry.no }}</td>
+                                <td>{{ entry.type }}</td>
+                                <td>{{ entry.state }}</td>
+                                <td>{{ entry.candidate_name }}</td>
+                                <td>{{ entry.party }}</td>
+                                <td>{{ entry.electors }}</td>
+                                <td>{{ entry.votes }}</td>
+                                <td>{{ entry.turnout }}%</td>
+                                <td>{{ entry.margin }}</td>
+                                <td>{{ entry.margin_percentage }}%</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+    </div>
+</div>
+<script>
+    var partyData = {
+        labels: [
+            {% for party, stats in party_stats.items %}
+                "{{ party }}",
+            {% endfor %}
+        ],
+        datasets: [{
+            data: [
+                {% for party, stats in party_stats.items %}
+                    {{ stats.votes_percent }},
+                {% endfor %}
+            ],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)'
+            ],
+            borderWidth: 1
+        }]
+    };
+
+    var partyChart = new Chart(document.getElementById('partyPieChart'), {
+        type: 'pie',
+        data: partyData,
+        options: {
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'right'
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            var label = context.label || '';
+                            var value = context.parsed || 0;
+                            return label + ': ' + value.toFixed(2) + '%'; // Display percentage
+                        }
+                    }
+                }
+            }
+        }
+    });
+    
+
+    var partyBarData = {
+        labels: [
+            {% for party, stats in party_stats.items %}
+                "{{ party }}",
+            {% endfor %}
+        ],
+        datasets: [{
+            label: 'Seats',
+            data: [
+                {% for party, stats in party_stats.items %}
+                    {{ stats.seats }},
+                {% endfor %}
+            ],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)', // Red
+                'rgba(54, 162, 235, 0.2)', // Blue
+                'rgba(255, 206, 86, 0.2)', // Yellow
+                'rgba(75, 192, 192, 0.2)', // Green
+                'rgba(153, 102, 255, 0.2)' // Purple
+                // Add more colors as needed
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)'
+                // Border colors can be the same as background colors or different
+            ],
+            borderWidth: 1
+        }]
+    };
+    
+    var partyBarChart = new Chart(document.getElementById('partyBarChart'), {
+        type: 'bar',
+        data: partyBarData,
+        options: {
+            indexAxis: 'y', // Set the index axis to 'y' for horizontal bars
+            plugins: {
+                legend: {
+                    display: false
+                },
+                title: {
+                    display: true,
+                    text: 'Party Seats'
+                }
+            }
+        }
+    });
+    
+</script>
+</body>
+</html>

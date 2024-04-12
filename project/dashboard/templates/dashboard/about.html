@@ -1,0 +1,212 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AboutUs</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #23284e; /* Light Purple Background */
+      color: #423f5f; /* Dark Purple Font Color */
+    }
+
+    .horizontal-card {
+      display: flex;
+    }
+
+    .column-card {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .navbar {
+      background-color: #23284e; /* Dark Purple Navbar */
+      overflow: hidden;
+      color: white;
+      width: 180px;
+      height: 80%; /* Adjusted height */
+      padding: 0; /* Remove padding */
+      margin: 0; /* Remove margin */
+      display: flex;
+      flex-direction: column;
+    }
+
+    
+    .navbar ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: left; /* Align items vertically in the center */
+      padding: 0 10px;
+    }
+
+    .navbar ul li a {
+      display: block;
+      color: white;
+      text-decoration: none;
+      line-height: 50px; /* Match line height with navbar height */
+    }
+
+    .navbar ul li a:hover {
+      background-color: #554e6f; /* Darker Hover Color */
+    }
+
+    #main-card {
+      margin-top: 10px;
+      padding: 10px;
+    }
+
+    .card {
+      color: #fff;
+      background-color: rgba(35, 40, 78, 0.5);
+      display:flex;
+      flex-direction: column;
+      align-content: center;
+      box-shadow: 0 4px 8px rgba(4, 2, 56, 0.1);
+      border-radius: 15px;
+      margin: 10px auto;
+      padding: 5px;
+      width: 300px; /* Adjusted width */
+    }
+
+    .b-card {
+      color: #fff;
+      background-color: #4e506f;
+      box-shadow: 0 4px 8px rgba(4, 2, 56, 0.1);
+      border-radius: 15px;
+      margin: 5px;
+      padding: 20px;
+      width: 1250px;
+    }
+
+    header {
+        color: white;
+        padding: 20px;
+      }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    tr:hover {
+      background-color: #d7d2e4;
+    }
+
+    footer {
+        color: #fff;
+        text-align: center;
+        padding: 10px;
+      }
+
+  </style>
+</head>
+<body>
+<div class="horizontal-card">
+    <div class="column-card">
+        <div class="navbar">
+          <ul>
+            <li><a href="http://127.0.0.1:8000/index/"><h2>PollCast </h2></a></li>
+            <li><a href="http://127.0.0.1:8000/index/"><i class="fas fa-chart-bar"></i> Dashboard</a></li>
+            <li><a href="http://127.0.0.1:8000/predict/"><i class="fa fa-line-chart" aria-hidden="true"></i> Prediction</a></li>
+            <li><a href="http://127.0.0.1:8000/exitpoll/"><i class="fa-solid fa-check-to-slot"></i> Exit Polls</a></li>
+            <li><a href="http://127.0.0.1:8000/history/"><i class="fas fa-history"></i> Historical Data</a></li>
+            <li><a href="http://127.0.0.1:8000/state/"><i class="fa fa-sort-amount-asc" aria-hidden="true"></i> Historical Predict</a></li>
+            <li><a href="http://127.0.0.1:8000/social/"><i class="fa-solid fa-photo-film"></i> Social Media</a></li>
+            <li><a href="http://127.0.0.1:8000/tweets/"><i class="fa-solid fa-hashtag"></i> Party Tweets</a></li>
+            <li><a href="http://127.0.0.1:8000/news/"><i class="fas fa-newspaper"></i> News Site</a></li>
+            <li><a href="http://127.0.0.1:8000/feedback/"><i class="fas fa-comment"></i> Feedback</a></li>
+            <li><a href="http://127.0.0.1:8000/aboutus/"><i class="fas fa-info-circle"></i> About Us</a></li>
+          </ul>
+        </div>
+    </div>
+    <div class="column-card" id="main-card">
+        <div class="column-card">
+            <div>
+                <header>
+                    <h1>About Us</h1>
+                </header>
+            </div>
+            <div class="b-card"> 
+                <h2>Election Prediction System using ML</h2>
+                <p>Predicting Lok Sabha 2024 election</p>
+                <p>Prediction is based on historical data as well as real-time data from Facebook, Instagram, YouTube, and news through API integration.
+                    Graphical analysis for timely changes through prediction covered.
+                    Harnessing the power of sentiment analysis for gauging public opinion.
+                    Innovative approach to election prediction for the upcoming 2024 elections.
+                    Systematic analysis of social media, news articles, and other textual sources.
+                    Integration of machine learning algorithms for extracting meaningful insights.
+                    Predictive model rooted in sentiment analysis.
+                    Providing valuable insights for campaign strategists and policymakers.
+                    Continuous adaptation of the model to changing language patterns.
+                    Offering an intuitive interface for exploring real-time sentiment trends.
+                    Integration of historical data for discerning long-term trends and patterns.
+                    Contributing to a more informed and data-driven approach to election forecasting.
+                </p>
+            </div>
+            <div class="b-card"> 
+                <h2>Tech Stack Used:</h2>
+                <ul>
+                    <li>Frontend: HTML, CSS, JavaScript</li>
+                      <p>Our frontend utilizes HTML for structuring web pages, CSS for styling, and JavaScript for dynamic interactivity, providing users with a seamless and engaging experience.</p>
+                    <li>Backend: Django for integration</li>
+                      <p>For seamless integration of various components, we rely on Django, a high-level Python web framework, known for its scalability, security, and ease of development.</p>
+                    <li>ML: Machine Learning with Random Forest for predictive modeling</li>
+                      <p>Using machine learning algorithms, specifically Random Forest, our system predicts election outcomes based on historical data and real-time inputs, providing accurate and reliable forecasts.</p>
+                    <li>RapidAPI for real-time data extraction from social media platforms like YouTube, Instagram, Twitter</li>
+                      <p>With RapidAPI, we extract real-time data from popular social media platforms, such as YouTube, Instagram, and Twitter, enabling us to analyze public sentiment and trends as they unfold.</p>
+                    <li>Chart.js for graphical analysis of data</li>
+                      <p>Chart.js allows us to visually represent complex data through interactive and customizable charts, empowering users to gain insights into electoral trends and patterns effortlessly.</p>
+                </ul>
+            </div>
+            <div class="b-card"> 
+                <h2>Our Team</h2>
+                <div class="horizontal-card">
+                    <div class="card">
+                        <img src="{% static 'images/deanna.jpeg' %}" alt="Team Member 1">
+                        <p>Deanna Fernandes</p>
+                    </div>
+                    <div class="card">
+                        <img src="{% static 'images/prerna.jpeg' %}" alt="Team Member 2">
+                        <p>Prerna Bajaj</p>
+                    </div>
+                    <div class="card">
+                        <img src="{% static 'images/soham.jpeg' %}" alt="Team Member 3">
+                        <p>Soham Bhole</p>
+                    </div>
+                    <div class="card">
+                        <img src="{% static 'images/nishtha.jpeg' %}" alt="Team Member 4">
+                        <p>Nishtha Batra</p>
+                    </div>
+                </div>
+            </div>
+            <div> 
+                <footer>
+                    <p>&copy; 2024 Election Prediction System. All rights reserved.</p>
+                </footer>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

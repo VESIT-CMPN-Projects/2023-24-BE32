@@ -1,0 +1,674 @@
+{% comment %} <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SocialMedia</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color:  rgba(40,49,73,255);
+        }
+
+        .horizontal-card {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .column-card {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar {
+            position: fixed;
+            width: 20%;
+            height: 100%;
+            color: #fff;
+            padding: 20px;
+        }
+
+        .navbar ul {
+            list-style-type: none;
+        }
+
+        .navbar ul li {
+            padding: 20px;
+        }
+
+        .navbar ul li a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        #main-card {
+            margin-left: 25%; /* Add margin to accommodate the navbar */
+        }
+
+        .card {
+            color: #fff;
+            width: 200px; /* Adjust width as needed */
+            height: 250px; /* Adjust height as needed */
+            background-color: rgba(64,75,105,255); /* Set background color */
+            box-shadow: 0 4px 8px rgba(4, 2, 56, 0.1); 
+            border-radius: 15px;
+            margin: 10px;
+            padding: 10px;
+        }
+
+        .b-card {
+            color: #fff;
+            width: 430px; /* Adjust width as needed */
+            height: 250px; /* Adjust height as needed */
+            background-color: rgba(64,75,105,255); /* Set background color */
+            box-shadow: 0 4px 8px rgba(4, 2, 56, 0.1); 
+            border-radius: 15px;
+            margin: 10px;
+            padding: 5px;
+        }
+
+        .bb-card {
+            color: #fff;
+            width: 930px; /* Adjust width as needed */
+            height: 550px; /* Adjust height as needed */
+            background-color: rgba(64,75,105,255); /* Set background color */
+            box-shadow: 0 4px 8px rgba(4, 2, 56, 0.1); 
+            border-radius: 15px;
+            margin: 10px;
+            padding: 5px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: rgba(40,49,73,255);
+        }
+
+        h1 {
+            color: #f9f8f8;
+        }
+
+        p {
+            color: #b8b6b6;
+        }
+
+        .scrollable-news {
+            height: 300px; /* Set your desired height here */
+            overflow-y: scroll;
+        }
+    </style>
+</head>
+<body>
+<div class="horizontal-card">
+    <div class="navbar">
+        <h2>PollCast </h2>
+        <ul>
+            <li><a href="http://127.0.0.1:8000/home/"><i class="fas fa-chart-bar"></i> Dashboard</a></li>
+            <li><a href=" "><i class="fas fa-history"></i> Historical Data</a></li>
+            <li><a href="http://127.0.0.1:8000/social/"><i class="fas fa-chart-pie"></i> Social Media Analytics</a></li>
+            <li><a href="http://127.0.0.1:8000/news/"><i class="fas fa-newspaper"></i> News Site</a></li>
+            <li><a href=" "><i class="fas fa-comment"></i> Feedback</a></li>
+            <li><a href=" "><i class="fas fa-info-circle"></i> About Us</a></li>
+        </ul>
+
+    </div>
+    <div class="column-card" id="main-card">
+        <div class="heading">
+            <h1>Dashboard</h1>
+            <p>Welcome to your dashboard.</p>
+        </div>
+        <div class="column-card">
+            <div class="horizontal-card">
+                <div class="card">
+                    {% if bjp4india_data %}
+                        <p>Username: {{ bjp4india_data.username }}</p>
+                        <p>Full Name: {{ bjp4india_data.full_name }}</p>
+                        <p>Follower Count: {{ bjp4india_data.follower_count }}</p>
+                        <p>Following Count: {{ bjp4india_data.following_count }}</p>
+                        <p>Media Count: {{ bjp4india_data.media_count }}</p>
+                    {% else %}
+                        <p>{{ bjp4india_data.error }}</p>
+                    {% endif %}
+                </div>
+
+                <div class="card">
+                    {% if incindia_data %}
+                        <p>Username: {{ incindia_data.username }}</p>
+                        <p>Full Name: {{ incindia_data.full_name }}</p>
+                        <p>Follower Count: {{ incindia_data.follower_count }}</p>
+                        <p>Following Count: {{ incindia_data.following_count }}</p>
+                        <p>Media Count: {{ incindia_data.media_count }}</p>
+                    {% else %}
+                        <p>{{ incindia_data.error }}</p>
+                    {% endif %}    
+                </div>
+
+                <div class="card">
+                    {% if aap_data %}
+                        <p>Username: {{ aap_data.username }}</p>
+                        <p>Full Name: {{ aap_data.full_name }}</p>
+                        <p>Follower Count: {{ aap_data.follower_count }}</p>
+                        <p>Following Count: {{ aap_data.following_count }}</p>
+                        <p>Media Count: {{ aap_data.media_count }}</p>
+                    {% else %}
+                        <p>{{ aap_data.error }}</p>
+                    {% endif %}   
+                </div>
+                <div class="card">
+                    {% if bsp_data %}
+                        <p>Username: {{ bsp_data.username }}</p>
+                        <p>Full Name: {{ bsp_data.full_name }}</p>
+                        <p>Follower Count: {{ bsp_data.follower_count }}</p>
+                        <p>Following Count: {{ bsp_data.following_count }}</p>
+                        <p>Media Count: {{ bsp_data.media_count }}</p>
+                    {% else %}
+                        <p>{{ bsp_data.error }}</p>
+                    {% endif %}   
+                </div>
+            </div>
+            <div class="horizontal-card">
+                <div class="card">
+                    <p>BJP4India Followers</p>
+                    {% if bjp4india_followers_data %}
+                        <ul>
+                        {% for follower in bjp4india_followers_data %}
+                            <li>{{ follower }}</li>
+                        {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>{{ bjp4india_followers_data.error }}</p>
+                    {% endif %}
+
+                    <p>BJP4India Following</p>
+                    {% if bjp4india_following_data %}
+                        <ul>
+                        {% for followed_user in bjp4india_following_data %}
+                            <li>{{ followed_user }}</li>
+                        {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>{{ bjp4india_following_data.error }}</p>
+                    {% endif %}
+                </div>
+
+                <div class="card">
+                    <p>INCIndia Followers</p>
+                    {% if incindia_followers_data %}
+                        <ul>
+                        {% for follower in incindia_followers_data %}
+                            <li>{{ follower }}</li>
+                        {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>{{ incindia_followers_data.error }}</p>
+                    {% endif %}
+
+                    <p>INCIndia Following</p>
+                    {% if incindia_following_data %}
+                        <ul>
+                        {% for followed_user in incindia_following_data %}
+                            <li>{{ followed_user }}</li>
+                        {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>{{ incindia_following_data.error }}</p>
+                    {% endif %}
+                
+                </div>
+
+                <div class="card">
+                    <p>AAP Followers</p>
+                    {% if aap_followers_data %}
+                        <ul>
+                        {% for follower in aap_followers_data %}
+                            <li>{{ follower }}</li>
+                        {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>{{ aap_followers_data.error }}</p>
+                    {% endif %}
+
+                    <p>AAP Following</p>
+                    {% if aap_following_data %}
+                        <ul>
+                        {% for followed_user in aap_following_data %}
+                            <li>{{ followed_user }}</li>
+                        {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>{{ aap_following_data.error }}</p>
+                    {% endif %}   
+                </div>
+                <div class="card">
+                    <p>BSP Followers</p>
+                    {% if bsp_followers_data %}
+                        <ul>
+                        {% for follower in bsp_followers_data %}
+                            <li>{{ follower }}</li>
+                        {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>{{ bsp_followers_data.error }}</p>
+                    {% endif %}
+
+                    <p>BSP Following</p>
+                    {% if bsp_following_data %}
+                        <ul>
+                        {% for followed_user in bsp_following_data %}
+                            <li>{{ followed_user }}</li>
+                        {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>{{ bsp_following_data.error }}</p>
+                    {% endif %}  
+                </div>
+            </div>
+            <div class="horizontal-card">
+                <div class="card">
+                    <p>BJP YouTube Sentiment</p>
+                    <p>Total Comments: {{ bjp_sentiment.total_comments }}</p>
+                    <p>Positive Comments: {{ bjp_sentiment.neutral_count }}</p>
+                    <p>Negative Comments: {{ bjp_sentiment.negative_count }}</p>
+                    <p>Neutral Comments: {{ bjp_sentiment.positive_count }}</p>
+                </div>
+                <div class="card">
+                    <p>Congress YouTube Sentiment</p>
+                    <p>Total Comments: {{ congress_sentiment.total_comments }}</p>
+                    <p>Positive Comments: {{ congress_sentiment.neutral_count }}</p>
+                    <p>Negative Comments: {{ congress_sentiment.negative_count }}</p>
+                    <p>Neutral Comments: {{ congress_sentiment.positive_count }}</p>   
+                </div>
+                <div class="card">
+                    <p>AAP YouTube Sentiment</p>
+                    <p>Total Comments: {{ aap_sentiment.total_comments }}</p>
+                    <p>Positive Comments: {{ aap_sentiment.neutral_count }}</p>
+                    <p>Negative Comments: {{ aap_sentiment.negative_count }}</p>
+                    <p>Neutral Comments: {{ aap_sentiment.positive_count }}</p>   
+                </div>
+                <div class="card">
+                    <p>BSP YouTube Sentiment</p>
+                    <p>Total Comments: {{ bsp_sentiment.total_comments }}</p>
+                    <p>Positive Comments: {{ bsp_sentiment.neutral_count }}</p>
+                    <p>Negative Comments: {{ bsp_sentiment.negative_count }}</p>
+                    <p>Neutral Comments: {{ bsp_sentiment.positive_count }}</p>   
+                </div>
+            </div> 
+
+            <div class="horizontal-card">
+                <div class="card">
+                    <h3>BJP Twitter Sentiment</h3>
+                    <p>Total Comments: {{ bjp_total_comments }}</p>
+                    <p>Positive Comments: {{ bjp_positive_count }}</p>
+                    <p>Negative Comments: {{ bjp_negative_count }}</p>
+                    <p>Neutral Comments: {{ bjp_neutral_count }}</p>
+                </div>
+                <div class="card">
+                    <h3>Congress Twitter Sentiment</h3>
+                    <p>Total Comments: {{ congress_total_comments }}</p>
+                    <p>Positive Comments: {{ congress_positive_count }}</p>
+                    <p>Negative Comments: {{ congress_negative_count }}</p>
+                    <p>Neutral Comments: {{ congress_neutral_count }}</p>  
+                </div>
+                <div class="card">
+                    <p>AAP YouTube Sentiment</p>
+                    <p>Total Comments: {{ aap_total_comments }}</p>
+                    <p>Positive Comments: {{ aap_neutral_count }}</p>
+                    <p>Negative Comments: {{ aap_negative_count }}</p>
+                    <p>Neutral Comments: {{ aap_positive_count }}</p>   
+                </div>
+                <div class="card">
+                    <p>BSP YouTube Sentiment</p>
+                    <p>Total Comments: {{ bsp_total_comments }}</p>
+                    <p>Positive Comments: {{ bsp_neutral_count }}</p>
+                    <p>Negative Comments: {{ bsp_negative_count }}</p>
+                    <p>Neutral Comments: {{ bsp_positive_count }}</p>   
+                </div>
+            </div>
+
+            
+
+            {% if winning_party %}
+        <h1>The winning party based on sentiment analysis is: {{ winning_party }}</h1>
+    {% else %}
+        <h1>No comments fetched for any party.</h1>
+    {% endif %}
+    
+    <h2>Party Sentiments</h2>
+    <ul>
+        {% for party, sentiments in party_sentiments.items %}
+            <li>
+                <h3>{{ party }}</h3>
+                <ul>
+                    <li>Positive Comments: {{ sentiments.Positive }}</li>
+                    <li>Neutral Comments: {{ sentiments.Neutral }}</li>
+                    <li>Negative Comments: {{ sentiments.Negative }}</li>
+                </ul>
+            </li>
+        {% endfor %}
+    </ul>
+
+        </div>
+
+
+        <div>
+    <h2>Party Sentiments (Multi-Stacked Bar Chart)</h2>
+    <canvas id="partySentimentsMultiStackedChart" width="400" height="200"></canvas>
+</div>
+
+    </div>
+</div>
+
+<script>
+   
+</script>
+
+</body>
+</html> {% endcomment %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Media</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #23284e; 
+      color: #fff;
+    }
+
+    .horizontal-card {
+    display: flex;
+    justify-content: space-between;
+    overflow-x: auto; /* Optional for horizontal scroll if content overflows */
+    }
+
+    .card-list {
+        display: flex;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .column-card {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .navbar {
+      background-color: #23284e; /* Dark Purple Navbar */
+      overflow: hidden;
+      color: white;
+      width: 180px;
+      height: 80%; 
+      padding: 0; 
+      margin: 0; 
+      display: flex;
+      flex-direction: column;
+    }
+
+    
+    .navbar ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: left; /* Align items vertically in the center */
+      padding: 0 10px;
+    }
+
+    .navbar ul li a {
+      display: block;
+      color: white;
+      text-decoration: none;
+      line-height: 50px; /* Match line height with navbar height */
+    }
+
+    .navbar ul li a:hover {
+      background-color: #554e6f; /* Darker Hover Color */
+    }
+
+    #main-card {
+      margin-top: 10px;
+      padding: 10px;
+    }
+
+    .card {
+        display: flex;
+      flex-direction: column;
+      color: #fff;
+      background-color: #23284e;
+      box-shadow: 0 4px 8px rgba(4, 2, 56, 0.1);
+      border-radius: 15px;
+      margin: 10px;
+      padding: 5px;
+    }
+
+    .b-card {
+        display: flex;
+        flex-direction:horizontal;
+        color: #fff;
+        background-color: #4e506f;
+        box-shadow: 0 4px 8px rgba(4, 2, 56, 0.1);
+        border-radius: 15px;
+        margin: 5px;
+        padding: 5px;
+        width: 1200px; 
+    }
+
+    .bb-card {
+        color: #fff;
+        background-color: #4e506f;
+        box-shadow: 0 4px 8px rgba(4, 2, 56, 0.1);
+        border-radius: 15px;
+        margin: 10px;
+        padding: 10px;
+        width: 570px; 
+        height: 370px; /* Adjusted height */
+      }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    tr:hover {
+      background-color: #d7d2e4;
+    }
+
+    h1 {
+      color: white;
+    }
+
+    p {
+      color: #7e779b;
+    }
+
+  </style>
+</head>
+<body>
+<div class="horizontal-card">
+  <div class="column-card">
+    <div class="navbar">
+        <ul>
+            <li><a href="http://127.0.0.1:8000/index/"><h2>PollCast </h2></a></li>
+            <li><a href="http://127.0.0.1:8000/index/"><i class="fas fa-chart-bar"></i> Dashboard</a></li>
+            <li><a href="http://127.0.0.1:8000/predict/"><i class="fa fa-line-chart" aria-hidden="true"></i> Prediction</a></li>
+            <li><a href="http://127.0.0.1:8000/exitpoll/"><i class="fa-solid fa-check-to-slot"></i> Exit Polls</a></li>
+            <li><a href="http://127.0.0.1:8000/history/"><i class="fas fa-history"></i> Historical Data</a></li>
+            <li><a href="http://127.0.0.1:8000/state/"><i class="fa fa-sort-amount-asc" aria-hidden="true"></i> Historical Predict</a></li>
+            <li><a href="http://127.0.0.1:8000/social/"><i class="fa-solid fa-photo-film"></i> Social Media</a></li>
+            <li><a href="http://127.0.0.1:8000/tweets/"><i class="fa-solid fa-hashtag"></i> Party Tweets</a></li>
+            <li><a href="http://127.0.0.1:8000/news/"><i class="fas fa-newspaper"></i> News Site</a></li>
+            <li><a href="http://127.0.0.1:8000/feedback/"><i class="fas fa-comment"></i> Feedback</a></li>
+            <li><a href="http://127.0.0.1:8000/aboutus/"><i class="fas fa-info-circle"></i> About Us</a></li>
+        </ul>
+    </div>
+  </div>
+    <div class="column-card" id="main-card">
+            <div class="column-card">
+                <h3>Instagram</h3>
+                <div class="b-card">
+                    <div class="column-card">
+                        <div class="card" style="width: 270px; height: 300px;">
+                        {% if bjp4india_data %}
+                            <p>Username: {{ bjp4india_data.username }}</p>
+                            <p>Full Name: {{ bjp4india_data.full_name }}</p>
+                            <p>Follower Count: {{ bjp4india_data.follower_count }}</p>
+                            <p>Following Count: {{ bjp4india_data.following_count }}</p>
+                            <p>Media Count: {{ bjp4india_data.media_count }}</p>
+                        {% else %}
+                            <p>{{ bjp4india_data.error }}</p>
+                        {% endif %}
+                        </div>
+                    </div>
+                    <div class="column-card">
+                        <div class="card" style="width: 270px; height: 300px;">
+                            {% if incindia_data %}
+                                <p>Username: {{ incindia_data.username }}</p>
+                                <p>Full Name: {{ incindia_data.full_name }}</p>
+                                <p>Follower Count: {{ incindia_data.follower_count }}</p>
+                                <p>Following Count: {{ incindia_data.following_count }}</p>
+                                <p>Media Count: {{ incindia_data.media_count }}</p>
+                            {% else %}
+                                <p>{{ incindia_data.error }}</p>
+                            {% endif %} 
+                        </div>
+                    </div>
+                    <div class="column-card">
+                        <div class="card" style="width: 270px; height: 300px;">
+                            {% if aap_data %}
+                                <p>Username: {{ aap_data.username }}</p>
+                                <p>Full Name: {{ aap_data.full_name }}</p>
+                                <p>Follower Count: {{ aap_data.follower_count }}</p>
+                                <p>Following Count: {{ aap_data.following_count }}</p>
+                                <p>Media Count: {{ aap_data.media_count }}</p>
+                            {% else %}
+                                <p>{{ aap_data.error }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="column-card">
+                        <div class="card" style="width: 270px; height: 300px;">
+                            {% if bsp_data %}
+                                <p>Username: {{ bsp_data.username }}</p>
+                                <p>Full Name: {{ bsp_data.full_name }}</p>
+                                <p>Follower Count: {{ bsp_data.follower_count }}</p>
+                                <p>Following Count: {{ bsp_data.following_count }}</p>
+                                <p>Media Count: {{ bsp_data.media_count }}</p>
+                            {% else %}
+                                <p>{{ bsp_data.error }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="column-card">
+                <h3>Twitter Sentiment</h3>
+                <div class="b-card">
+                    <div class="horizontal-card">
+                            {% for party, sentiments in party_sentiments.items %}
+                            <div class="card" style="width: 270px; height: 200px;">
+                            <li>
+                                <h4>{{ party }}</h4>
+                                <ul>
+                                    <li style="padding-left: 10px; color: rgba(255, 255, 255, 0.7);">Positive Comments: {{ sentiments.Positive }}</li>
+                                    <li style="padding-left: 10px; color: rgba(255, 255, 255, 0.7);">Neutral Comments: {{ sentiments.Neutral }}</li>
+                                    <li style="padding-left: 10px; color: rgba(255, 255, 255, 0.7);">Negative Comments: {{ sentiments.Negative }}</li>
+                                </ul>
+                            </li>
+                                </div>
+                            {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="column-card">
+                <h3>Youtube Sentiment</h3>
+                <div class="b-card">
+                    <div class="column-card">
+                        <div class="card" style="width: 270px; height: 300px;">
+                            <p>BJP YouTube Sentiment</p>
+                            <p>Total Comments: {{ bjp_total_comments }}</p>
+                            <p>Positive Comments: {{ bjp_neutral_count }}</p>
+                            <p>Negative Comments: {{ bjp_negative_count }}</p>
+                            <p>Neutral Comments: {{ bjp_positive_count }}</p>
+                        </div>
+                    </div>
+                    <div class="column-card">
+                        <div class="card" style="width: 270px; height: 300px;">
+                            <p>Congress YouTube Sentiment</p>
+                            <p>Total Comments: {{ congress_total_comments }}</p>
+                            <p>Positive Comments: {{ congress_neutral_count }}</p>
+                            <p>Negative Comments: {{ congress_negative_count }}</p>
+                            <p>Neutral Comments: {{ congress_positive_count }}</p>  
+                        </div>
+                    </div>
+                    <div class="column-card">
+                        <div class="card" style="width: 270px; height: 300px;">
+                            <p>AAP YouTube Sentiment</p>
+                            <p>Total Comments: {{ aap_total_comments }}</p>
+                            <p>Positive Comments: {{ aap_neutral_count }}</p>
+                            <p>Negative Comments: {{ aap_negative_count }}</p>
+                            <p>Neutral Comments: {{ aap_positive_count }}</p>  
+                        </div>
+                    </div>
+                    <div class="column-card">
+                        <div class="card" style="width: 270px; height: 300px;">
+                            <p>BSP YouTube Sentiment</p>
+                            <p>Total Comments: {{ bsp_total_comments }}</p>
+                            <p>Positive Comments: {{ bsp_neutral_count }}</p>
+                            <p>Negative Comments: {{ bsp_negative_count }}</p>
+                            <p>Neutral Comments: {{ bsp_positive_count }}</p>  
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="b-card">
+                <div class="column-card">
+                    {% if winning_party %}
+                        <h1>The winning party based on sentiment analysis is: {{ winning_party }}</h1>
+                    {% else %}
+                        <h1>No comments fetched for any party.</h1>
+                    {% endif %}
+                </div>
+            </div>
+    </div>
+</div>
+
+</body>
+</html>

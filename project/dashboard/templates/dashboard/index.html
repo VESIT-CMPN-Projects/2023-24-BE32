@@ -1,0 +1,326 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #23284e; /* Light Purple Background */
+      color: #423f5f; /* Dark Purple Font Color */
+    }
+
+    .horizontal-card {
+      display: flex;
+    }
+
+    .column-card {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .icon-image{
+      opacity: 0.3;
+    }
+
+    #map {
+      height: 440px;
+      width: 100%;
+    }
+
+    .navbar {
+      background-color: #23284e; /* Dark Purple Navbar */
+      overflow: hidden;
+      color: white;
+      width: 180px;
+      height: 80%; /* Adjusted height */
+      padding: 0; /* Remove padding */
+      margin: 0; /* Remove margin */
+      display: flex;
+      flex-direction: column;
+    }
+
+    
+    .navbar ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: left; /* Align items vertically in the center */
+      padding: 0 10px;
+    }
+
+    .navbar ul li a {
+      display: block;
+      color: white;
+      text-decoration: none;
+      line-height: 50px; /* Match line height with navbar height */
+    }
+
+    .navbar ul li a:hover {
+      background-color: #554e6f; /* Darker Hover Color */
+    }
+
+    #main-card {
+      margin-top: 10px;
+      padding: 10px;
+    }
+
+    .card {
+      color: #fff;
+      background-color: #4e506f;
+      box-shadow: 0 4px 8px rgba(4, 2, 56, 0.1);
+      border-radius: 15px;
+      margin: 5px;
+      padding: 5px;
+      width: calc(33.33% - 10px); /* Adjusted width */
+    }
+
+    .b-card {
+      color: #fff;
+      background-color: #4e506f;
+      box-shadow: 0 4px 8px rgba(4, 2, 56, 0.1);
+      border-radius: 15px;
+      margin: 5px;
+      padding: 5px;
+      width: calc(33.33% - 10px); 
+      height: 500px; /* Adjusted height */
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    tr:hover {
+      background-color: #d7d2e4;
+    }
+
+    h1 {
+      color: #423f5f;
+    }
+
+    p {
+      color: #7e779b;
+    }
+  </style>
+</head>
+<body>
+<div class="horizontal-card">
+  <div class="column-card">
+    <div class="navbar">
+      <ul>
+        <li><a href="http://127.0.0.1:8000/index/"><h2>PollCast </h2></a></li>
+        <li><a href="http://127.0.0.1:8000/index/"><i class="fas fa-chart-bar"></i> Dashboard</a></li>
+        <li><a href="http://127.0.0.1:8000/predict/"><i class="fa fa-line-chart" aria-hidden="true"></i> Prediction</a></li>
+        <li><a href="http://127.0.0.1:8000/exitpoll/"><i class="fa-solid fa-check-to-slot"></i> Exit Polls</a></li>
+        <li><a href="http://127.0.0.1:8000/history/"><i class="fas fa-history"></i> Historical Data</a></li>
+        <li><a href="http://127.0.0.1:8000/state/"><i class="fa fa-sort-amount-asc" aria-hidden="true"></i> Historical Predict</a></li>
+        <li><a href="http://127.0.0.1:8000/social/"><i class="fa-solid fa-photo-film"></i> Social Media</a></li>
+        <li><a href="http://127.0.0.1:8000/tweets/"><i class="fa-solid fa-hashtag"></i> Party Tweets</a></li>
+        <li><a href="http://127.0.0.1:8000/news/"><i class="fas fa-newspaper"></i> News Site</a></li>
+        <li><a href="http://127.0.0.1:8000/feedback/"><i class="fas fa-comment"></i> Feedback</a></li>
+        <li><a href="http://127.0.0.1:8000/aboutus/"><i class="fas fa-info-circle"></i> About Us</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="column-card" id="main-card">
+    <div class="column-card">
+      <div class="horizontal-card">
+        <div class="card">
+          <div class="horizontal-card">
+            <div class="column-card">
+              <h4>Total Voters</h4>
+              <h3>{{ gtotal_column }}</h3>
+            </div>
+            <img src="{% static 'images/crowd.png'%}" class="icon-image" style="height: 70px; width: auto;">
+          </div>
+        </div>
+        <div class="card">
+          <div class="horizontal-card">
+            <div class="column-card">
+              <h4>Total States</h4>
+              <h3>37</h3>
+            </div>
+            <img src="{% static 'images/state.png'%}" class="icon-image" style="height: 70px; width: auto;">
+          </div>
+        </div>
+        <div class="card">
+          <div class="horizontal-card">
+            <div class="column-card">
+              <h4>General Women</h4>
+              <h3>{{ gwomen_column }}</h3>
+            </div>
+            <img src="{% static 'images/female.png'%}" class="icon-image" style="height: 70px; width: auto;">
+          </div>
+        </div>
+        <div class="card">
+          <div class="horizontal-card">
+            <div class="column-card">
+              <h4>General Men</h4>
+              <h4>{{ gmen_column }}</h4>
+            </div>
+            <img src="{% static 'images/male.png'%}" class="icon-image" style="height: 70px; width: auto;">
+          </div>
+        </div>
+        <div class="card">
+          <div class="horizontal-card">
+            <div class="column-card">
+              <h4>Overseas Women</h4>
+              <h4>{{ overseas_women_count }}</h4>
+            </div>
+            <img src="{% static 'images/overseas-woman.png'%}" class="icon-image" style="height: 70px; width: auto;">
+          </div>
+        </div>
+        <div class="card">
+          <div class="horizontal-card">
+            <div class="column-card">
+              <h4>Overseas Men</h4>
+              <h4>{{ overseas_men_count }}</h4>
+            </div>
+            <img src="{% static 'images/overseas-man.png'%}" class="icon-image" style="height: 70px; width: auto;">
+          </div>
+        </div>
+        <div class="card">
+          <div class="horizontal-card">
+            <div class="column-card">
+              <h4>Service Women</h4>
+              <h4>{{ service_women_count }}</h4>
+            </div>
+            <img src="{% static 'images/service-woman.png'%}" class="icon-image" style="height: 70px; width: auto;">
+          </div>
+        </div>
+        <div class="card">
+          <div class="horizontal-card">
+            <div class="column-card">
+              <h4>Service Men</h4>
+              <h4>{{ service_men_count }}</h4>
+            </div>
+            <img src="{% static 'images/service-man.png'%}" class="icon-image" style="height: 70px; width: auto;">
+          </div>
+        </div>
+      </div>
+      <div class="horizontal-card">
+        <div class="b-card" id="age-analysis-container"> <h2>Age Analysis</h2>
+            <canvas id="genderPieChart" style="width: 100%; max-height: 430px;"></canvas>
+        </div>
+        <div class="b-card">
+          <h2>Geospatial Analysis</h2>
+          <img src="{% static 'images/map.png' %}" alt="Map Image" id="map">
+        </div>
+        <div class="b-card" id="gender-analysis-container"> <h2>Gender Analysis for different voter category</h2>
+          <canvas id="groupedBarChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var ctx = document.getElementById('genderPieChart').getContext('2d');
+    var gwomenData = {{ gwomen_column|default:0|safe }};
+    var gmenData = {{ gmen_column|default:0|safe }};
+    var gthirdData = {{ gthird_column|default:0|safe }};
+
+    var myPieChart = new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: ['GWOMEN', 'GMEN', 'GTHIRD'],
+        datasets: [{
+          data: [gwomenData, gmenData, gthirdData],
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.5)',
+            'rgba(54, 162, 235, 0.5)',
+            'rgba(255, 206, 86, 0.5)',
+          ],
+        }],
+      },
+    });
+
+    var ctx2 = document.getElementById('groupedBarChart').getContext('2d');
+    var groupedBarChart = new Chart(ctx2, {
+      type: 'bar',
+      data: {
+        labels: ['General', 'Overseas', 'Service'],
+        datasets: [
+          {
+            label: 'Men',
+            backgroundColor: 'rgba(75, 192, 192, 0.7)',
+            data: [
+              {{ general_men_ratio }},
+              {{ overseas_men_ratio }},
+              {{ service_men_ratio }}
+            ]
+          },
+          {
+            label: 'Women',
+            backgroundColor: 'rgba(255, 99, 132, 0.7)',
+            data: [
+              {{ general_women_ratio }},
+              {{ overseas_women_ratio }},
+              {{ service_women_ratio }}
+            ]
+          },
+          {
+            label: 'Third Gender',
+            backgroundColor: 'rgba(255, 206, 86, 0.7)',
+            data: [
+              {{ general_third_ratio }},
+              {{ overseas_third_ratio }},
+              0 // Third gender ratio for Service voters (replace with actual ratio if available)
+            ]
+          },
+        ],
+      },
+      options: {
+        scales: {
+          x: { stacked: true },
+          y: { stacked: true }
+        }
+      }
+    });
+
+    function resizeChart() {
+        var canvas = document.getElementById('genderPieChart');
+        var container = document.getElementById('age-analysis-container');
+        var aspectRatio = 10;
+    
+        canvas.width = container.clientWidth;
+        var maxHeight = container.clientHeight; 
+        canvas.height = Math.min(canvas.width / aspectRatio, maxHeight); 
+  
+        var chart = Chart.getChart(canvas);
+        if (chart) {
+          chart.resize();
+          chart.update();
+        }
+      }
+
+    resizeChart();
+    window.addEventListener('resize', resizeChart);
+  });
+
+  
+
+</script>
+</body>
+</html>
